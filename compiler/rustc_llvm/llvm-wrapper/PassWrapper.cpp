@@ -692,12 +692,20 @@ void LLVMSelfProfileInitializeCallbacks(
   });
 
   PIC.registerAfterPassCallback(
-      [LlvmSelfProfiler, AfterPassCallback](StringRef Pass, llvm::Any Ir) {
+      [LlvmSelfProfiler, AfterPassCallback](StringRef Pass, llvm::Any Ir
+  #if LLVM_VERSION_GE(12, 0)
+      , const llvm::PreservedAnalyses &Analyses
+  #endif
+      ) {
         AfterPassCallback(LlvmSelfProfiler);
       });
 
   PIC.registerAfterPassInvalidatedCallback(
-      [LlvmSelfProfiler, AfterPassCallback](StringRef Pass) {
+      [LlvmSelfProfiler, AfterPassCallback](StringRef Pass
+  #if LLVM_VERSION_GE(12, 0)
+      , const llvm::PreservedAnalyses &Analyses
+  #endif
+      ) {
         AfterPassCallback(LlvmSelfProfiler);
       });
 #endif
