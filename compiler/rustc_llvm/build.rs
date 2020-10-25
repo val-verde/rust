@@ -227,8 +227,7 @@ fn main() {
             continue;
         }
 
-        let kind = if name.starts_with("LLVM") { llvm_kind } else { "dylib" };
-        println!("cargo:rustc-link-lib={}={}", kind, name);
+        println!("cargo:rustc-link-lib={}={}", llvm_kind, name);
     }
 
     // LLVM ldflags
