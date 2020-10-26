@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+${BUILD_PACKAGE_PREFIX}/bin/clang++ \
+    -target ${HOST_TRIPLE} \
+    -L ${PACKAGE_PREFIX}/lib \
+    --sysroot ${SYSROOT} \
+    ${@}
