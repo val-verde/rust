@@ -1,0 +1,140 @@
+[llvm]
+#skip-rebuild = false
+optimize = true
+#thin-lto = false
+release-debuginfo = false
+assertions = false
+ccache = false
+#ccache = "/path/to/ccache"
+version-check = false
+#static-libstdcpp = false
+ninja = true
+#targets = "AArch64;ARM;Hexagon;MSP430;Mips;NVPTX;PowerPC;RISCV;Sparc;SystemZ;WebAssembly;X86"
+#experimental-targets = "AVR"
+#link-jobs = 0
+link-shared = true
+#version-suffix = "-rust-dev"
+#clang-cl = '/path/to/clang-cl.exe'
+#cflags = "@@CFLAGS@@"
+#cxxflags = "@@CXXFLAGS@@"
+#ldflags = "@@LDFLAGS@@"
+use-libcxx = true
+use-linker = "lld"
+#allow-old-toolchain = false
+
+[build]
+build = "@@BUILD_TRIPLE@@"
+host = ["@@HOST_TRIPLE@@"]
+target = ["@@TARGET_TRIPLE@@"]
+build-dir = "@@STAGE_ROOT@@"
+cargo = "@@CARGO@@"
+rustc = "@@RUSTC@@"
+rustfmt = "@@RUSTFMT@@"
+docs = false
+compiler-docs = false
+submodules = false
+#fast-submodules = true
+#gdb = "@@GDB@@"
+nodejs = "@@NODE@@"
+python = "@@PYTHON@@"
+#locked-deps = false
+#vendor = false
+#full-bootstrap = false
+extended = true
+tools = ["cargo", "rls", "clippy", "rustfmt", "analysis", "src"]
+verbose = 0
+sanitizers = false
+profiler = false
+#cargo-native-static = false
+#low-priority = false
+#configure-args = []
+#local-rebuild = false
+#print-step-timings = false
+
+[install]
+prefix = "@@INSTALL_PREFIX@@"
+#sysconfdir = "/etc"
+#docdir = "share/doc/rust"
+#bindir = "bin"
+#libdir = "lib"
+#mandir = "share/man"
+#datadir = "share"
+#infodir = "share/info"
+#localstatedir = "/var/lib"
+
+[rust]
+optimize = true
+debug = false
+#codegen-units = 1
+#codegen-units-std = 1
+debug-assertions = false
+debug-assertions-std = false
+debuginfo-level = 0
+debuginfo-level-rustc = 0
+debuginfo-level-std = 0
+debuginfo-level-tools = 0
+debuginfo-level-tests = 0
+backtrace = false
+incremental = false
+parallel-compiler = true
+default-linker = "@@LD@@"
+#channel = "dev"
+musl-root = "@@MUSLROOT@@"
+rpath = true
+verbose-tests = false
+optimize-tests = true
+codegen-tests = true
+#ignore-git = true
+#dist-src = false
+#save-toolstates = "/path/to/toolstates.json"
+#codegen-backends = ["llvm"]
+lld = false
+use-lld = true
+llvm-tools = false
+deny-warnings = true
+backtrace-on-ice = false
+verify-llvm-ir = false
+#thin-lto-import-instr-limit = 100
+#remap-debuginfo = false
+#jemalloc = false
+#test-compare-mode = false
+llvm-libunwind = "system"
+#control-flow-guard = false
+#new-symbol-mangling = false
+
+[target.@@BUILD_TRIPLE@@]
+cc = "@@BUILD_CC@@"
+cxx = "@@BUILD_CXX@@"
+ar = "@@AR@@"
+ranlib = "@@RANLIB@@"
+linker = "@@BUILD_LD@@"
+llvm-config = "@@BUILD_LLVMCONFIG@@"
+llvm-filecheck = "@@FILECHECK@@"
+#android-ndk = "/path/to/ndk"
+crt-static = false
+#musl-root = "..."
+#musl-libdir = musl-root/lib
+#wasi-root = "..."
+#qemu-rootfs = "..."
+
+[target.@@TARGET_TRIPLE@@]
+cc = "@@CC@@"
+cxx = "@@CXX@@"
+ar = "@@AR@@"
+ranlib = "@@RANLIB@@"
+linker = "@@LD@@"
+llvm-config = "@@LLVMCONFIG@@"
+#llvm-filecheck = "/path/to/FileCheck"
+#android-ndk = "/path/to/ndk"
+crt-static = false
+#musl-root = "..."
+#musl-libdir = musl-root/lib
+#wasi-root = "..."
+#qemu-rootfs = "..."
+
+[dist]
+#sign-folder = "path/to/folder/to/sign"
+#gpg-password-file = "path/to/gpg/password"
+#upload-addr = "https://example.com/folder"
+#src-tarball = true
+#missing-tools = false

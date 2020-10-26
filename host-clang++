@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+${BUILD_PACKAGE_PREFIX}/bin/clang++ \
+    -I ${BUILD_PACKAGE_PREFIX}/include \
+    ${@}
