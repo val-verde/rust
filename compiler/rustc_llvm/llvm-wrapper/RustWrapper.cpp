@@ -216,7 +216,20 @@ static Attribute::AttrKind fromRust(LLVMRustAttribute Kind) {
 extern "C" void LLVMRustAddCallSiteAttribute(LLVMValueRef Instr, unsigned Index,
                                              LLVMRustAttribute RustAttr) {
   CallBase *Call = unwrap<CallBase>(Instr);
+#if LLVM_VERSION_GE(12, 0)
+  Attribute::AttrKind attrKind = fromRust(RustAttr);
+  Attribute Attr;
+  switch (attrKind) {
+  case Attribute::StructRet:
+    Attr = Attribute::getWithStructRetType(Call->getContext(), Call->getFunctionType()->getReturnType());
+    break;
+  default:
+    Attr = Attribute::get(Call->getContext(), attrKind);
+    break;
+  }
+#else
   Attribute Attr = Attribute::get(Call->getContext(), fromRust(RustAttr));
+#endif
   Call->addAttribute(Index, Attr);
 }
 
@@ -279,7 +292,20 @@ extern "C" void LLVMRustAddStructRetCallSiteAttr(LLVMValueRef Instr, unsigned In
 extern "C" void LLVMRustAddFunctionAttribute(LLVMValueRef Fn, unsigned Index,
                                              LLVMRustAttribute RustAttr) {
   Function *A = unwrap<Function>(Fn);
+#if LLVM_VERSION_GE(12, 0)
+  Attribute::AttrKind attrKind = fromRust(RustAttr);
+  Attribute Attr;
+  switch (attrKind) {
+  case Attribute::StructRet:
+    Attr = Attribute::getWithStructRetType(A->getContext(), A->getReturnType());
+    break;
+  default:
+    Attr = Attribute::get(A->getContext(), attrKind);
+    break;
+  }
+#else
   Attribute Attr = Attribute::get(A->getContext(), fromRust(RustAttr));
+#endif
   AttrBuilder B(Attr);
   A->addAttributes(Index, B);
 }
