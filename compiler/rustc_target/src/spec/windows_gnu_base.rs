@@ -42,20 +42,13 @@ pub fn opts() -> TargetOptions {
     late_link_args.insert(LinkerFlavor::Gcc, mingw_libs.clone());
     late_link_args.insert(LinkerFlavor::Lld(LldFlavor::Ld), mingw_libs);
     let dynamic_unwind_libs = vec![
-        // If any of our crates are dynamically linked then we need to use
-        // the shared libgcc_s-dw2-1.dll. This is required to support
-        // unwinding across DLL boundaries.
-        "-lgcc_s".to_string(),
+        "-lkernel32".to_string(),
+        "-lunwind".to_string(),
     ];
     late_link_args_dynamic.insert(LinkerFlavor::Gcc, dynamic_unwind_libs.clone());
     late_link_args_dynamic.insert(LinkerFlavor::Lld(LldFlavor::Ld), dynamic_unwind_libs);
     let static_unwind_libs = vec![
-        // If all of our crates are statically linked then we can get away
-        // with statically linking the libgcc unwinding code. This allows
-        // binaries to be redistributed without the libgcc_s-dw2-1.dll
-        // dependency, but unfortunately break unwinding across DLL
-        // boundaries when unwinding across FFI boundaries.
-        "-lgcc_eh".to_string(),
+        "-l:libunwind.a".to_string(),
         "-l:libpthread.a".to_string(),
     ];
     late_link_args_static.insert(LinkerFlavor::Gcc, static_unwind_libs.clone());
