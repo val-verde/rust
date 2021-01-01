@@ -38,7 +38,6 @@ cfg_if::cfg_if! {
 
 #[cfg(target_env = "musl")]
 #[link(name = "unwind", kind = "static", cfg(target_feature = "crt-static"))]
-#[link(name = "gcc_s", cfg(not(target_feature = "crt-static")))]
 extern "C" {}
 
 // When building with crt-static, we get `gcc_eh` from the `libc` crate, since
