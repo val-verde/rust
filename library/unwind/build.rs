@@ -106,9 +106,6 @@ mod llvm_libunwind {
             cfg.define("__LIBUNWIND_IS_NATIVE_ONLY", None);
             cfg.define("NDEBUG", None);
         } else {
-            cfg.flag("-std=c99");
-            cfg.flag("-std=c++11");
-            cfg.flag("-nostdinc++");
             cfg.flag("-fno-exceptions");
             cfg.flag("-fno-rtti");
             cfg.flag("-fstrict-aliasing");
