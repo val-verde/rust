@@ -17,5 +17,6 @@ pub fn opts() -> TargetOptions {
     // was to always emit `uwtable`).
     base.default_uwtable = true;
     base.crt_static_respected = false;
+    base.no_default_libraries = false;
     base
 }
