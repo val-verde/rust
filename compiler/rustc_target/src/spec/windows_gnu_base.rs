@@ -27,7 +27,6 @@ pub fn opts() -> TargetOptions {
         "-lmsvcrt".to_string(),
         "-lmingwex".to_string(),
         "-lmingw32".to_string(),
-        "-lgcc".to_string(), // alas, mingw* libraries above depend on libgcc
         // mingw's msvcrt is a weird hybrid import library and static library.
         // And it seems that the linker fails to use import symbols from msvcrt
         // that are required from functions in msvcrt in certain cases. For example
