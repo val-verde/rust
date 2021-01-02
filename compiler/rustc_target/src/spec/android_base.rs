@@ -14,5 +14,6 @@ pub fn opts() -> TargetOptions {
     base.has_elf_tls = false;
     base.requires_uwtable = true;
     base.crt_static_respected = false;
+    base.no_default_libraries = false;
     base
 }
