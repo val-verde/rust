@@ -69,7 +69,7 @@ impl LinkerInfo {
                 sess,
                 info: self,
                 hinted_static: false,
-                is_ld: false,
+                is_ld: true,
                 target_cpu,
             }) as Box<dyn Linker>,
 
