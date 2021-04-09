@@ -1335,8 +1335,13 @@ extern "C" LLVMTypeKind LLVMRustGetTypeKind(LLVMTypeRef Ty) {
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(SMDiagnostic, LLVMSMDiagnosticRef)
 
 extern "C" void LLVMRustSetInlineAsmDiagnosticHandler(
+#if LLVM_VERSION_GE(13, 0)
+    LLVMContextRef C, DiagnosticHandler::DiagnosticHandlerTy H, void *CX) {
+  unwrap(C)->setDiagnosticHandlerCallBack(H, CX);
+#else
     LLVMContextRef C, LLVMContext::InlineAsmDiagHandlerTy H, void *CX) {
   unwrap(C)->setInlineAsmDiagnosticHandler(H, CX);
+#endif
 }
 
 extern "C" bool LLVMRustUnpackSMDiagnostic(LLVMSMDiagnosticRef DRef,
