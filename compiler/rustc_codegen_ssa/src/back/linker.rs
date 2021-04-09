@@ -363,8 +363,8 @@ impl<'a> Linker for GccLinker<'a> {
         self.cmd.arg(path);
     }
     fn full_relro(&mut self) {
-        self.linker_arg("-zrelro");
-        self.linker_arg("-znow");
+        self.linker_arg("-Wl,-zrelro");
+        self.linker_arg("-W-,-znow");
     }
     fn partial_relro(&mut self) {
         self.linker_arg("-zrelro");
@@ -410,8 +410,8 @@ impl<'a> Linker for GccLinker<'a> {
             self.linker_arg("-force_load");
             self.linker_arg(&lib);
         } else {
-            self.linker_arg("--whole-archive").cmd.arg(lib);
-            self.linker_arg("--no-whole-archive");
+            self.linker_arg("-Wl,--whole-archive").cmd.arg(lib);
+            self.linker_arg("-Wl,--no-whole-archive");
         }
     }
 
@@ -441,7 +441,7 @@ impl<'a> Linker for GccLinker<'a> {
         // --gc-sections drops the size of hello world from 1.8MB to 597K, a 67%
         // reduction.
         } else if !keep_metadata {
-            self.linker_arg("--gc-sections");
+            self.linker_arg("-Wl,--gc-sections");
         }
     }
 
@@ -594,7 +594,7 @@ impl<'a> Linker for GccLinker<'a> {
             }
             // Both LD and LLD accept export list in *.def file form, there are no flags required
             if !is_windows {
-                arg.push("--version-script=")
+                arg.push("-Wl,--version-script=")
             }
         }
 
@@ -613,13 +613,13 @@ impl<'a> Linker for GccLinker<'a> {
 
     fn group_start(&mut self) {
         if self.takes_hints() {
-            self.linker_arg("--start-group");
+            self.linker_arg("-Wl,--start-group");
         }
     }
 
     fn group_end(&mut self) {
         if self.takes_hints() {
-            self.linker_arg("--end-group");
+            self.linker_arg("-Wl,--end-group");
         }
     }
 
@@ -641,7 +641,7 @@ impl<'a> Linker for GccLinker<'a> {
     // Some versions of `gcc` add it implicitly, some (e.g. `musl-gcc`) don't,
     // so we just always add it.
     fn add_eh_frame_header(&mut self) {
-        self.linker_arg("--eh-frame-hdr");
+        self.linker_arg("-Wl,--eh-frame-hdr");
     }
 
     fn add_no_exec(&mut self) {
@@ -1170,7 +1170,7 @@ impl<'a> Linker for WasmLd<'a> {
     }
 
     fn gc_sections(&mut self, _keep_metadata: bool) {
-        self.cmd.arg("--gc-sections");
+        self.cmd.arg("-Wl,--gc-sections");
     }
 
     fn optimize(&mut self) {
