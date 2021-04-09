@@ -409,7 +409,11 @@ LLVMRustBuildAtomicCmpXchg(LLVMBuilderRef B, LLVMValueRef Target,
                            LLVMAtomicOrdering Order,
                            LLVMAtomicOrdering FailureOrder, LLVMBool Weak) {
   AtomicCmpXchgInst *ACXI = unwrap(B)->CreateAtomicCmpXchg(
-      unwrap(Target), unwrap(Old), unwrap(Source), fromRust(Order),
+      unwrap(Target), unwrap(Old), unwrap(Source),
+#if LLVM_VERSION_GE(13, 0)
+      llvm::MaybeAlign(),
+#endif
+      fromRust(Order),
       fromRust(FailureOrder));
   ACXI->setWeak(Weak);
   return wrap(ACXI);
