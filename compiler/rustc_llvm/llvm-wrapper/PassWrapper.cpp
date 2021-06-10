@@ -817,16 +817,32 @@ LLVMRustOptimizeWithNewPassManager(
     PGOOpt = PGOOptions(PGOUsePath, "", "", PGOOptions::IRUse);
   }
 
-#if LLVM_VERSION_GE(12, 0)
+#if LLVM_VERSION_LT(13, 0)
   PassBuilder PB(DebugPassManager, TM, PTO, PGOOpt, &PIC);
 #else
   PassBuilder PB(TM, PTO, PGOOpt, &PIC);
 #endif
 
-  LoopAnalysisManager LAM(DebugPassManager);
-  FunctionAnalysisManager FAM(DebugPassManager);
-  CGSCCAnalysisManager CGAM(DebugPassManager);
-  ModuleAnalysisManager MAM(DebugPassManager);
+  LoopAnalysisManager LAM
+#if LLVM_VERSION_LT(13, 0)
+    (DebugPassManager)
+#endif
+  ;
+  FunctionAnalysisManager FAM
+#if LLVM_VERSION_LT(13, 0)
+    (DebugPassManager)
+#endif
+  ;
+  CGSCCAnalysisManager CGAM
+#if LLVM_VERSION_LT(13, 0)
+    (DebugPassManager)
+#endif
+  ;
+  ModuleAnalysisManager MAM
+#if LLVM_VERSION_LT(13, 0)
+    (DebugPassManager)
+#endif
+  ;
 
   FAM.registerPass([&] { return PB.buildDefaultAAPipeline(); });
 
@@ -967,7 +983,12 @@ LLVMRustOptimizeWithNewPassManager(
     }
   }
 
-  ModulePassManager MPM(DebugPassManager);
+  ModulePassManager MPM
+#if LLVM_VERSION_LT(13, 0)
+    (DebugPassManager)
+#endif
+  ;
+
   bool NeedThinLTOBufferPasses = UseThinLTOBuffers;
   if (!NoPrepopulatePasses) {
     if (OptLevel == PassBuilder::OptimizationLevel::O0) {
