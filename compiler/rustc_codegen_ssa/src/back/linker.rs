@@ -648,13 +648,13 @@ impl<'a> Linker for GccLinker<'a> {
         if self.sess.target.is_like_windows {
             self.linker_arg("--nxcompat");
         } else if self.sess.target.linker_is_gnu {
-            self.linker_arg("-znoexecstack");
+            self.linker_arg("-Wl,-znoexecstack");
         }
     }
 
     fn add_as_needed(&mut self) {
         if self.sess.target.linker_is_gnu {
-            self.linker_arg("--as-needed");
+            self.linker_arg("-Wl,--as-needed");
         }
     }
 }
